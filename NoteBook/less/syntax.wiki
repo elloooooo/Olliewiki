@@ -1,0 +1,310 @@
+%toc
+
+= Less Syntax =
+== 变量 ==
+容易理解
+{{{class="brush:css; toolbar:false"
+@nice-blue: #5B83AD;
+@light-blue: @nice-blue + #111;
+
+#header {color: @light-blue}
+}}}
+输出
+{{{class="brush:css; toolbar:false"
+#header{color: #6c94be}
+}}}
+
+用变量名定义变量
+{{{
+@fnord: "I am fnord";
+@var: fnord ;
+
+content: @@var;
+}}}
+输出
+{{{
+content: "I am fnord";
+}}}
+== 混合 ==
+可以定义一些通用的属性集合为一个`class`，在其他`class`中可以调用这些属性
+{{{
+.bordered {
+  border-top: dotted 1px black;
+  border-bottom: solid 2px black;
+}
+}}}
+在其他`class`引入该`class`
+{{{
+#menu a {
+  color: #111;
+  .bordered;
+}
+.post a {
+  color: red;
+  .bordered;
+}
+}}}
+输出
+{{{
+#menu a {
+  color: #111;
+  border-top: dotted 1px black;
+  border-bottom: solid 2px black;
+}
+.post a {
+  color: red;
+  border-top: dotted 1px black;
+  border-bottom: solid 2px black;
+}
+}}}
+
+== 带参数的混合 ==
+定义带参数的集合属性
+{{{
+.border-radius (@radius) {
+  border-radius: @radius;
+  -moz-border-radius: @radius;
+  -webkit-border-radius: @radius;
+}
+}}}
+参数可以有默认值
+{{{
+.border-radius (@radius: 5px) {
+  border-radius: @radius;
+  -moz-border-radius: @radius;
+  -webkit-border-radius: @radius;
+}
+}}}
+调用
+{{{
+#header {
+  .border-radius(4px);
+}
+.button {
+  .border-radius(6px);  
+}
+}}}
+
+=== @argument 变量 ===
+@argument 包含了所有传递进来的变量
+{{{
+.box-shadow (@x: 0, @y: 0, @blur: 1px, @color: #000) {
+  box-shadow: @arguments;
+  -moz-box-shadow: @arguments;
+  -webkit-box-shadow: @arguments;
+}
+.box-shadow(2px, 5px);
+}}}
+则输出
+{{{
+box-shadow: 2px 5px 1px #000;
+-moz-box-shadow: 2px 5px 1px #000;
+-webkit-box-shadow: 2px 5px 1px #000;
+}}}	
+
+== 模式匹配和导引表达式 ==
+=== 匹配 ===
+根据传入的变量，该边混合的呈现
+如第一个参数是`dark`、`light`则调用不同的颜色呈现，`@_`可以匹配所有输入，所以总会执行
+{{{
+.mixin (dark, @color) {
+  color: darken(@color, 10%);
+}
+.mixin (light, @color) {
+  color: lighten(@color, 10%);
+}
+.mixin (@_, @color) {
+  display: block;
+}
+
+.class {
+  .mixin(@switch, #888);
+}
+}}}
+如果运行
+{{{
+@switch: light;
+
+.class {
+  .mixin(@switch, #888);
+}
+}}}
+输出
+{{{
+.class {
+  color: #a2a2a2;
+  display: block;
+}
+}}}
+
+变量可以匹配任意传入值，而变量以外的固定值仅仅匹配与其相等的传入值
+=== 引导 ===
+条件判断，`when`关键字用于定义一个引导序列
+{{{
+.mixin (@a) when (lightness(@a) >= 50%) {
+  background-color: black;
+}
+.mixin (@a) when (lightness(@a) < 50%) {
+  background-color: white;
+}
+.mixin (@a) {
+  color: @a;
+}
+}}}
+导引中可用的比较运算符
+$>$,$\geqslant$,$=$,$\leqslant$,$<$，`true`表示布尔值真，除`true`以外，都是布尔值假
+
+导引可使用有多个条件时用`,`分开，都符合，才算匹配成功
+{{{
+.mixin (@a) when (@a > 10), (@a < -10) { ... }
+}}}
+基于类型匹配
+{{{
+.mixin (@a, @b: 0) when (isnumber(@b)) { ... }
+.mixin (@a, @b: black) when (iscolor(@b)) { ... }
+}}}
+常见类型检测函数：
+# iscolor
+# isnumber
+# isstring
+# iskeyword
+# isurl
+# ispixel
+# ispercentage
+# isem
+
+== 嵌套规则 ==
+Less
+{{{
+#header {
+  color: black;
+
+  .navigation {
+    font-size: 12px;
+  }
+  .logo {
+    width: 300px;
+    &:hover { text-decoration: none }
+  }
+}
+}}}
+CSS
+{{{
+#header { color: black; }
+#header .navigation {
+  font-size: 12px;
+}
+#header .logo { 
+  width: 300px; 
+}
+#header .logo:hover {
+  text-decoration: none;
+}
+}}}
+
+`&`关键字表示之后这个嵌套与上一层形成串联选择器，而不是后代选择器
+
+== 运算 ==
+任何数字颜色和变量都可以进行运算
+{{{
+@base: 5%;
+@filler: @base * 2;
+@other: @base + @filler;
+
+color: #888 / 4;
+background-color: @base-color + #111;
+height: 100% / 2 + @filler;
+}}}
+可以自动判别颜色和单位
+{{{
+@var: 1px + 5
+}}}
+返回6px
+
+== Color函数 ==
+Less提供的色彩运算函数
+{{{
+lighten(@color, 10%);     // return a color which is 10% *lighter* than @color
+darken(@color, 10%);      // return a color which is 10% *darker* than @color
+
+saturate(@color, 10%);    // return a color 10% *more* saturated than @color
+desaturate(@color, 10%);  // return a color 10% *less* saturated than @color
+
+fadein(@color, 10%);      // return a color 10% *less* transparent than @color
+fadeout(@color, 10%);     // return a color 10% *more* transparent than @color
+fade(@color, 50%);        // return @color with 50% transparency
+
+spin(@color, 10);         // return a color with a 10 degree larger in hue than @color
+spin(@color, -10);        // return a color with a 10 degree smaller hue than @color
+
+mix(@color1, @color2);    // return a mix of @color1 and @color2
+}}}
+提取颜色信息
+{{{
+hue(@color);        // returns the `hue` channel of @color
+saturation(@color); // returns the `saturation` channel of @color
+lightness(@color);  // returns the 'lightness' channel of @color
+}}}
+在一种颜色通道上创建另一种颜色
+{{{
+@new: hsl(hue(@old), 45%, 90%);
+}}}
+`@new`会保持`@old`的色调，但是具有不同的饱和度和亮度
+
+== Math函数 ==
+{{{
+round(1.67); // returns `2`
+ceil(2.4);   // returns `3`
+floor(2.6);  // returns `2`
+percentage(0.5); // returns `50%`
+}}}
+
+== 命名空间 ==
+可能为了更好组织CSS或者单纯是为了更好的封装，将一些变量或者混合模块打包起来,可以像下面这样在#bundle中定义一些属性集之后可以重复使用:
+{{{
+#bundle {
+  .button () {
+    display: block;
+    border: 1px solid black;
+    background-color: grey;
+    &:hover { background-color: white }
+  }
+  .tab { ... }
+  .citation { ... }
+}
+}}}
+使用
+{{{
+#header a {
+  color: orange;
+  #bundle > .button;
+}
+}}}
+== Importing ==
+引入.less文件，.less后缀可带可不带
+{{{
+@import "lib.less";
+@import "lib";
+}}}
+也可以导入.css文件
+== 字符串插值 ==
+变量可以用类似ruby和php的方式嵌入到字符串中，像@{name}这样的结构:
+{{{
+@base-url: "http://assets.fnord.com";
+background-image: url("@{base-url}/images/bg.png");
+}}}
+
+== JavaScript ==
+JavaScript可以在less中使用，通过反引号
+{{{
+@var: `"hello".toUpperCase() + '!'`;
+}}}
+访问JavaScript环境
+{{{
+@height: `document.body.clientHeight`;
+}}}
+如果你想将一个JavaScript字符串解析成16进制的颜色值, 你可以使用 color 函数:
+{{{
+@color: color(`window.colors.baseColor`);
+@darkcolor: darken(@color, 10%);
+}}}

@@ -1,0 +1,9 @@
+=== 主定理 ===
+令$a \leq 1$和$b>1$是常数，$f(n)$是一个函数，$T(n)$是定义在非负整数上的递归式：
+
+$T(n) = aT(\frac{n}{b})+f(n)$
+
+其中我们将${\frac{n}{b}}$解释为$\lfloor \frac{n}{b} \rfloor$或者$\lceil \frac{n}{b} \rceil$。那么$T(n)$有如下渐近界：
+# 若对某个常数$\varepsilon > 0$ 有$f(n) = O(n^{\lg_b^{a-\varepsilon}}(n))$，则$T(n)=\Theta (n^{\lg_b^a})$
+# 若$f(n) = \Theta (n^{\lg_b^a})$，则$T(n)=\Theta(n^{\lg_b^a} \lg(n))$
+# 若对某个常数$\varepsilon>0$有$f(n)=\Omega(n^{\lg_b^{a+\varepsilon}})$，且对某个常数$c<1$和所有足够大的n有$af(\frac{n}{b})\leq cf(n)$，则$T(n)=\Theta(f(n))$

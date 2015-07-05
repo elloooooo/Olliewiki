@@ -1,0 +1,59 @@
+= 栈与队列 =
+== 栈 ==
+=== 基本操作 ===
+# Push（入栈）
+# Pop（出栈） 
+# Stack-Empty(判断栈是否空)
+=== 栈的实现 ===
+    - 单链表
+        - 每一步操作在最坏情况下都可以在常数时间内完成
+		- 使用额外空间和时间处理链
+    - 变长数组
+        - push时，当数组长度达到极限，新建新的容量为2倍的新数组，并将原数组的值复制过去，时间复杂度为$N+(2+4+...+N)\thicksim 3N$ 
+        - pop操作时，如果数组中的元素个数减至容量的$\frac{1}{4}$，则新建数组容量为$\frac{1}{2}$的新数组，并进行拷贝。
+        - 在一组最坏情况下的操作下，每一个操作的平均耗时为常数
+		- 更加节省空间
+=== 栈的应用 ===
+    - 平衡符号
+	- 后缀表达式
+	- 中缀到后缀的转换
+	- 方法调用
+	
+----
+== 队列 ==
+=== 基本操作 ===
+# enqueue 入队
+# dequeue 出队
+# isEmpty 判断是否为空队
+=== 实现 ===
+    - 单链表
+        - 维护两个指针`first` 指向队头，`tail`指向队尾，队尾进，队头出 
+	- 变长数组
+        - 数组，维护`first`,`tail`两个下标，指向队头元素和队尾元素
+实现与栈相似
+=== 队列应用 ===
+服务器连接队列
+
+----
+== 泛型实现 ==
+利用泛型可以构造出可以放入任何类型的栈与队列，但是对于扩容数组的实现，由于Java中并不支持泛型的数组，所以必须要通过显示的造型
+{{{class="brush:java; toolbar:false"
+	public class FixedCapacityStack<Item>{
+		private Item[] s;
+		private int N = 0;
+		
+		public FixedCapacityStack(){
+		//并不是s = new Item[capcity];
+			s = (Item[])new Object[capcity];
+		}
+		public boolean isEmpty(){
+			return N == 0;
+		}
+		public void push(Item item){
+			s[N++] = item;
+		}
+		public Item pop(){
+			return s[--N];
+		}
+	}
+}}}

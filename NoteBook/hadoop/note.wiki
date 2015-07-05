@@ -1,0 +1,23 @@
+= Hadoop笔记 =
+== hadoop2.0中新特性 ==
+=== HDFS新特性 ===
+==== NameNode HA ====
+为NameNode增加standby NameNode，备用，以解决单点故障
+==== NameNode Federation ====
+支持多NameNode，对DataNode进行管理，解决了NameNode内存受限导致的支持文件数量限制的问题
+==== HDFS异构多级存储 ====
+支持多级各类的存储介质
+==== HDFS ACL ====
+增强权限管理
+==== HDFS快照 ====
+- 帮助用户保存某个时刻的数据，防止数据误删
+- 数据备份
+- 快照只读
+==== HDFS缓存 ====
+*问题背景* ：
+- HDFS本身不提供缓存，只是用OS的缓存，所以可能引起一个block同时缓存三个副本，浪费内存
+- 多计算框架共存，对缓存要求不同
+----
+
+
+

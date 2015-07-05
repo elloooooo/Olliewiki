@@ -1,0 +1,105 @@
+= 分治策略 =
+每层递归的3个步骤::
+:: 1.分解
+:: 2.解决
+:: 3.合并
+----
+== 寻找最大字串 ==
+=== 要求 ===
+从一个数组中寻找和最大的一个子串
+=== 思路 ===
+*利用分治策略*
+# *分解*
+  将数组拆分为两半，则最大字串必然存在于
+    # 左半数组中
+    # 右半数组中
+    # 跨越中间点
+  这三种情况之一。
+# *解决*
+  对于前面两种情况，仍可以认为是寻找最大字串的问题，只不过输入规模更小；而第三种情况，需要特殊处理。
+# *合并*
+  再针对这三种情况获得最大字串后，取其中最大的即可。
+=== 核心代码 ===
+{{{class="brush:java; toolbar:false"
+public class FindMaxString {
+	/**
+	 * 寻找跨越中点的最大字串
+	 * @param num
+	 * @param low
+	 * @param mid
+	 * @param high
+	 * @return Max_res
+	 * 	返回一个数组，数组包含最大字串的左下标，右下标，字串和
+	 */
+	private int[] findCrossMaxSubstring(int[] num,int low,int mid, int high){
+		int[] C_max_res = new int[3];
+		int Lindex = 0;
+		int Rindex = 0;
+		int Lmax = -9999;
+		int sum = 0;
+		for(int i=mid;i>=low;i--){
+			sum += num[i];
+			if(sum > Lmax){
+				Lmax = sum;
+				Lindex = i;
+			}
+		}
+		int Rmax = -9999;
+		sum =0;
+		for(int i=mid+1;i<=high;i++){
+			sum += num[i];
+			if(sum >Rmax){
+				Rmax = sum;
+				Rindex = i;
+			}
+		}
+		
+		C_max_res[0] = Lindex;
+		C_max_res[1] = Rindex;
+		C_max_res[2] = Lmax + Rmax;
+		
+		return C_max_res; 
+	}
+	
+	/**
+	 * 按照最大字串完全在左半一個字串中，完全在右半個字串中和跨越中點三種情況
+	 * @param num
+	 * @param low
+	 * @param high
+	 * @return Max_res
+	 * 	返回一个数组，数组包含最大字串的左下标，右下标，字串和
+	 */
+	public int[] findMaxSubstring(int[]num, int low, int high){
+		int[] Max_res = new int[3];
+		if(low == high){
+			Max_res[0] = low;
+			Max_res[1] = high;
+			Max_res[2] = num[low];
+			return Max_res;
+		}else{
+			int mid = (low + high)/2;	
+			//如果MaxSubstring出现在low~mid
+			
+			int[] L_Max_res = findMaxSubstring(num, low, mid);
+			
+			//如果MaxSubstring出现在mid~high	
+			int[] R_Max_res = findMaxSubstring(num, mid+1, high);
+			
+			//如果MaxSubstring跨mid
+			int[] C_Max_res = findCrossMaxSubstring(num,low,mid,high);
+			
+			if(L_Max_res[2]>R_Max_res[2] && L_Max_res[2]>C_Max_res[2]){
+				Max_res = L_Max_res;
+			}else if(R_Max_res[2]>L_Max_res[2] && R_Max_res[2]>C_Max_res[2]){
+				Max_res = R_Max_res;
+			}else if(C_Max_res[2]>L_Max_res[2] && C_Max_res[2]>R_Max_res[2]){
+				Max_res = C_Max_res;
+			}
+			return Max_res;
+		}
+	}
+}
+}}}
+=== 算法分析 ===
+利用分治算法，$T(n)= 2T(\frac{n}{2})+ \Theta(n)$,根据主定理，可以发现，$T(n)=\Theta(n\lg n)$
+如果利用[[../dynamic/maxsubstr|动态规划的算法]]，时间复杂度可以到达$O(n)$

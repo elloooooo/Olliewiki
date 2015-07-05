@@ -1,0 +1,56 @@
+= Hadoop安装配置 =
+
+== 无密码ssh登录设置 ==
+首先尝试是否可以无密码ssh登录
+{{{
+#ssh localhost
+}}}
+如果需要输密码就需要如下设置
+{{{
+# ssh-keygen -t dsa -P '' -f ~/.ssh/id_dsa
+# cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys
+}}}
+就是生成共钥私钥对，将共钥复制到`authorized_keys`文件中。即如果想无密码登录其他机器，就将自己的共钥复制到其他机器`~/.ssh/authorized_keys`文件中即可。
+
+*注意* 
+`.ssh`文件的的权限必须是700，`authorized_keys`文件权限必须是600，即要保证只有用户自己有写权限，认证才有效
+
+== Hadoop安装配置 ==
+依照[[http://hadoop.apache.org/docs/r2.6.0/hadoop-project-dist/hadoop-common/SingleCluster.html|官方文档]]即可
+=== 注意事项 ===
+`$ export HADOOP_ROOT_LOGGER=DEBUG,console`
+可以输出详细的调试信息，便于查找问题
+
+官网下载的hadoop2.6.0中，出现警告
+{{{
+WARN org.apache.hadoop.util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+}}}
+原因可能是
+# lib/native中代码为64位编译的文件，在32位机下面会报警告
+	需要对其重新进行编译，编译方法如下
+# java虚拟机找不到native目录
+	`/etc/profile`中添加配置
+	`export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib:$HADOOP_HOME/lib/native -Djava.net.preferIPv4Stack=true"`
+
+== Hadoop编译 ==
+编译hadoop需要安装Maven,gcc-c++,cmake,protobuf,zlib等
+
+== Hadoop监控页面 ==
+- DFS监控页面：`http://192.168.1.104:50070`
+- Application监控页面：`http://192.168.1.104:8088`
+PS.主要关闭防火墙哦，否在只能在本机上看了……
+=== 关闭防火墙 ===
+==== 开启指定端口 ====
+开启了80和22端口
+{{{
+#/sbin/iptables -I INPUT -p tcp –dport 80 -j ACCEPT
+#/sbin/iptables -I INPUT -p tcp –dport 22 -j ACCEPT
+#/etc/rc.d/init.d/iptables save
+
+#/etc/init.d/iptables restart
+}}}
+==== 关闭防火墙 ====
+{{{
+#/etc/init.d/iptables stop
+}}}
+

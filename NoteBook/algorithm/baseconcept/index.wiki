@@ -1,0 +1,9 @@
+%title baseconcept
+= 基础概念 =
+# [[concept01|循环不变式]]  
+# [[concept02|分治策略]]
+# [[concept03|渐进记号]]
+# [[concept04|主定理]]
+# [[concept05|原址]]
+# [[concept06|函数增长趋势]]
+# [[concept07|完全二叉树与满二叉树]]

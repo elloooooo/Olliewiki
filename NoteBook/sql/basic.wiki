@@ -1,0 +1,96 @@
+= SQL基础 =
+== 聚集 ==
+=== 基本聚集 ===
+    - avg
+	- min
+	- max
+	- sum
+	- count
+=== 分组聚集 ===
+group by子句中所有属性上取值相同的元组分为一组
+
+没有group by则所有元组视为一个分组
+
+_出现在select语句中但没有被聚集的属性只能出现在group by子句中_
+
+=== having字句 ===
+having字句属于聚集范畴，常和group by连用
+
+having字句中的谓词在 *形成分组* 后才起作用，因此可以使用聚集函数
+例子：
+{{{class="brush:sql; toolbar:false"
+	select course_id, semester, year, sec_id, avg(tot_cread)
+	from takes natural join student
+	where year = 2009
+	group by course_id,semester, year, sec_id
+	having count(ID) >=2
+}}}
+*执行顺序* 
+# 现根据from子句计算一个关系
+# 为计算出的关系应用where子句的谓词
+# 如果有group子句，满足where子句谓词的元组通过group子句形成分组，如果没有group子句，则满足where子句的所有元组作为一个分组
+# 如果有having子句，将其谓词应用到每一个分组上，不满足谓词的分组将被丢弃
+# select子句利用剩下的分组产生出查询结果中的元组，即在每个分组上应用聚集函数来得到单个元组
+
+_任何出现在having子句，但没有没有被聚集的属性必须出现在group by 子句中，否则查询被当成错误的_
+== 嵌套子查询 ==
+子查询可以嵌套在 *select-from-where* 语句中；
+=== where子句中的嵌套子查询 ===
+==== 与in/not in合用，检查集合成语资格 ====
+{{{class="brush:sql; toolbar:false"
+	select distinct course_id
+	from section
+	where course_id in (
+		select course_id
+		from section
+		where year = 2010
+	);
+}}}
+==== 与exists/not exists合用可以做空关系测试 ====
+{{{class="brush:sql; toolbar:false"
+	select distinct course_id
+	from section as S
+	where semester = 'Fall' and
+		exists(
+			select * from section as T
+			where semster = 'Spring' and S.course_id = T.course_id
+		)
+	);
+}}}
+使用来自外层查询的相关名称的子查询成为 *相关子查询* 
+=== from子句中的子查询 ===
+不可以使用来自from字句其他关系的相关变量。除非使用`lateral`关键字为前缀
+{{{class="brush:sql; toolbar:false"
+	select name, salary ,avg_salary
+	from instructor I1, lateral (select avg(salary) as avg_salary
+								 from instructor I2 
+								 where I2.dept_name = I1.dept_name);
+}}}
+
+=== select中的子查询 ===
+标量子查询:: 子查询之返回包含单个属性的单个元组
+{{{class="brush:sql; toolbar:false"
+	select dept_name
+	 (select count(*) 
+	  from instructor
+	  where department.dept_name = instructor.dept_name)
+	  as num_instructors
+	from department;
+}}}
+=== with字句 ===
+with子句提供定义临时关系的方法，这个定义只对包含with字句的查询有效
+例子：
+{{{class="brush:sql; toolbar:false"
+	with dept_total(dept_name, value) as
+		(select dept_name, sum(salary)
+		 from instructor 
+		 group by dept_name),
+		 dept_total_avg(value) as
+		(select avg(value) 
+		 from dept_total)
+	select dept_name
+	from dept_total, dept_total_avg
+	where dept_total.value >= dept_total_avg.value;
+}}}
+
+将两个子查询定义为临时关系，然后从这两个临时关系中进行查询

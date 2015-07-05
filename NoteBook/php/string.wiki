@@ -1,0 +1,29 @@
+= 字符串处理 =
+== 字符串函数拾遗 ==
+    - 字符串截取
+        - ltrim  去除左侧空格
+		- rtrim 去除右侧空格
+		- trim($string,["xxx"]) 去除两侧空格，第二个参数可以指定要去除的字符序
+	- 管理大小写
+        - ucwords 大写每个单词的首字母
+		- strtoupper 大写所有字母
+		- strtolower 小写所有字母
+		- ucfirst 大写第一个字母
+		- lcfirst 小写第一个字母
+	- 字符串查找
+        - str_word_count 字符串单词计数
+		- strlen 字符串长度
+		- strstr 查找针，并返回包含针及其后面的序列（大小写敏感），未找到则返回`false`
+		- stristr 查找针，并返回包含针及其后面的序列（大小写不敏感）
+		- strpos($string,"A") 返回针A的位置
+		- str_replace("A","B",$string) 将字符串变量`string`中的A替换为B
+		- substr($string, position1,position2 ) 字符串截取
+	- 字符串编辑
+        - strip_tags($string,[html标签]) 去除字串中的html标签，第二个参数为保留下来的标签
+		- addslashes() 查找特殊字符，并在他们之前加上反斜线
+		- stripslashes 去掉所有反斜线
+		- htmlentities 将字串中的html标签转为原生形式，即`<`用`&lt`这样的形式
+		- html_entity_decode 将原生形式转化为回来
+		- str_shuffle 将字符串随机重排
+		- md5($string) 生成字串的md5加密字串，为32位长的十六进制字符串结果
+

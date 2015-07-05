@@ -1,0 +1,44 @@
+== 二叉搜索树 ==
+二叉搜索树性质:: 左子树中的节点key小于等于父节点key，右子树中的节点key大于等于父节点key
+
+搜索树数据结构支持的动态集合操作:: `SEARCH`, `MINMUM`, `MAXIMUM`, `PREDECESSOR`, `SUCCESSOR`, `INSERT`, `DELETE`
+
+二叉树上基本操作花费时间与树高成正比，对于一个有n个节点的二叉树，这些操作的最坏运行时间为$\Theta(\lg n)$。
+
+一棵随机构造的二叉树，期望高度为$O(\lg n)$，所以其操作的平均运行时间为$\Theta(\lg n)$。 
+
+
+=== 相关题目 ===
+给定一个序列，如何判断该序列是否为一棵二叉搜索树的后续遍历结果
+
+==== 思路 ====
+后续遍历的结果，最后一个数字一定为根节点，左子树中所有的点一定都小于等于根，右子树中所有节点都大于等于根。利用以上性质，递归的检测是否每一个节点的左右子树都符合上面的特征
+
+==== 核心代码 ====
+{{{class="brush:java; toolbar:false"
+//flag 用于保存检测结果
+private boolean flag=true;
+public void isBSTPW(int[] data,int startIndex,int rootIndex,boolean flag){
+	//flag代表父节点对左右子树特性的判断结果，只有父节点判断特性成立，继续判断才有意义
+	if(flag&&startIndex<rootIndex){
+		int left = startIndex;
+		//left-1表示根节点的左子树的下标
+		while(data[left]<data[rootIndex]){
+			left++;
+		}
+		//从left下标开始，之后的都应该属于根节点的右子树，判断特性是否成立
+		for(int j = left;j<rootIndex;j++){
+			if(data[j]<data[rootIndex]){
+				this.flag = false;
+			}
+		}
+		//检测数据左子树的左右子树
+		isBSTPW(data,0,left-1,this.flag);
+		//检测右子数的左右子树
+		isBSTPW(data,left,rootIndex-1,this.flag);
+	}
+}
+
+}}}
+
+

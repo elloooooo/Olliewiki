@@ -1,0 +1,22 @@
+= Self Introduction =
+This is my great honor to introduce myself here.
+
+My name is LiuBoyu graduated from University of Electronic Science of Tenhnology of China, UESTC for short, majored in Comunication Engerning. And now I am attending graduate School in SouthEast University majored in Integreted Circuit.
+
+I am very interested in Internet technologies, so I learn the web knowledge by myself in my spare time such as Java, database, javascript and so on. 
+In order to learn this skills better, I went to a company for practice which was developing a brand new product,a Human Resource Managment System. I was mainly took part in the privilelge system development. 
+In my 9 month internship, I learned many interesting skills such as Jquery, EasyUI which is a frame toolkit base on jquery, Spring, Mybatis and so on. I feel my improvment not only in skills and technonology but also in teamworks and the thoughts to my career planning.
+
+Now I am here to apply the position of java develop engeer because I think this is good platform for me to improve myself and I have the ability to make contribution to help this platform better.
+
+Thank you.
+
+== What is your greatest strength? ==
+I feel I am self-motivated man. I have strong will and good ability to learn new things. When I decide to learn something, I will always find opportunities to use them in practice. Because I think the best way to learn something is to learn it from both books and practice.
+
+For example, when I learn git, I use git to manage my project, my docments, my resumes. I pretend I am cooperating with the me in lab, the me in dormitory even the me yesterday.
+
+When I learn vim, I use vimwiki to take notes. When I learn Latex, I use it to write reports and resume.
+
+== Career Plan ==
+I think as a software engineer, the accumulation of knowledge and skills is really important. Anyone switch jobs or technology directions frenquently will lose some of his accumulation. I think it is bad for his self-improvement. So in my opinion, I will stick on one position for several years to improve my technology and skills and then to decide what is the next step I will take.

@@ -1,0 +1,17 @@
+= 迭代器 =
+== 接口 ==
+实现`java.lang.Iteratble`接口，接口中要求实现函数`iterator()`
+{{{class="brush:java; toolbar:false"
+	public interface Iteratable<Item>{
+		Iterator<Item> iterator();
+	}
+}}}
+== 操作 ==
+    - hasNext() 
+    - next()
+== 思考题 ==
+Stack的单链表实现的迭代器可以无需修改使用到Queue的链表实现中，而Stack的扩容数组实现迭代器则不适用于Queue的扩容数组实现
+
+因为Stack的如栈操作，在链表实现中是从链表头插入，Queue出队从链表头出队，所以迭代遍历顺序相同。
+
+而数组实现Stack迭代从数组最后一个数，向前迭代，与Queue的顺序相反

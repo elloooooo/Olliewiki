@@ -1,0 +1,6 @@
+=== win8删除无线网络记录 ===
+# 利用管理员权限运行cmd窗口
+# `netsh wlan show profiles`可以查看所有的存储记录
+# `netsh wlan show profile name="xxx"`可以查看其中一条存储记录
+# `netsh wlan delete profile name="xxx"`可以删除其中一条存储记录
+{{img/cmdscreen.png|cmdscreen}}

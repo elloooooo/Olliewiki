@@ -1,0 +1,366 @@
+%title Latex基础
+%toc
+
+= Latex基础 =
+{{{class="brush:bash; toolbar:false"
+//texlive更新宏包命令
+tlmgr update --self && tlmgr update --all 
+}}}
+== 引言 ==
+# 命令以反斜线开头，必须的参数放在花括号里，可选的参数放在方括号里
+# 中文支持`\documentclass[UTF8]{ctexart}`
+# `texdoc ctex`打开`ctex`宏包的文档
+# 环境`\begin{环境名字}[可选参数]{必选参数}`
+# `\label{eqn:mass-energy}`相当于给前面的东西起小名,后面`\ref{eqn:mass-energy}`就是交叉引用
+# 遇到的宏包与编译工具
+	- fontspec xeCJK - XeLaTeX
+	- CJK,CJKutf8 -pdfLaTex LaTeX
+	- graphicx [dvipdfm],geometry [dvipdfmx],hyperref [dvips] -LaTeX
+== 插图与绘图 ==
+=== 图片插入要素 ===
+# figure环境 帮助实现浮动环境
+# \centering 居中设置，注意不要用centering环境，而是用在figure环境中用centering命令
+# \includegraphics 引入图像，可设定图片大小
+# \caption 图片名，加入\label命令
+# \label，便于交叉引用，可以放在\caption里，也可以放在\caption后面
+=== 将jpg转成eps格式 ===
+在现在的TeX发行版中，一般都带有一个bmeps的小程序，它能将PNG，JPEG和BMP等格式的位图转换成 EPS 格式的图档
+{{{class="brush:bash; toolbar:false"
+@echo off
+for /f %%i in ('dir /b *.jpg *.jpeg *.bmp *.png') do (
+    @echo %%i
+    bmeps -c %%i %%~ni.eps
+    @echo Finished
+    )
+
+pause
+}}}
+=== 获得灰度图 ===
+利用ImageMagick
+{{{class="brush:bash; toolbar:false"
+mkdir out
+for %%B in (*.jpg) do convert ”%%B” -colorspace Gray ”out/%%B”
+}}}
+=== Latex编译无法获取eps图像尺寸问题 ===
+{{{class="brush:bash; toolbar:false"
+\usepackage{bmpsize}
+\usepackage[dvipdfm]{graphics}
+}}}
+
+=== figure环境 ===
+figure环境的选项
+{{{class="brush:latex; toolbar:false"
+\begin{figure}[htbp] 
+%根据htbp的顺序，去找适合的位置排版图片
+%可以任意写多个，或不写
+}}}
+
+== 数学公式 ==
+=== 参考书 ===
+《More math into latex》出版社springer
+《latex companion》
+《ChinaTex math FAQ》
+
+=== 行内公式 ===
+{{{class="brush:latex; toolbar:false"
+$...$
+}}}
+=== 行间公式 ===
+{{{class="brush:latex; toolbar:false"
+$$...$$,\[..\]
+}}}
+
+=== 常用数学符号 ===
+{{{class="brush:latex; toolbar:false"
+\pm = plus minus
+\mp = minus plus
+\frac{分子}{分母}
+\sqrt{根次}{底数}
+\alpha
+\beta
+\sigma
+}}}
+
+=== 防止分子缩小 ===
+命令`\displaystyle`
+{{{class="brush:latex; toolbar:false"
+\ln \left(\displaystyle\frac{S}{X}\right) %这段文字是个分子，它的字号就会变的和分母一样大
+}}}
+
+=== 括号 ===
+{{{class="brush:latex; toolbar:false"
+\left(\right. 只输出一边的括号，补一个点
+\left\{...\right\} 输出大括号
+}}}
+
+=== 上下标位置 ===
+行内公式会将上下标将自动压缩，`\sum`,`\prod`
+命令`\limit`是行内公式上下标变到上下,`\nolimits`使行间公式的上下标变到右侧
+
+{{{class="brush:latex; toolbar:false"
+%把abc定义为一个运算符，方便用上面命令控制上下标位置
+\mathop{\rm abc} 
+}}}
+
+=== 公式编号 ===
+==== 自动编号 ====
+{{{class="brush:latex; toolbar:false"
+\begin{equation}
+...
+\end{equation}
+}}}
+
+==== 标签 ====
+{{{class="brush:latex; toolbar:false"
+%将一个公式表号为tag中的东西
+\begin{equation}\tag{...}
+...
+\end{equation}
+}}}
+==== 以节为依据编号 ====
+默认以chapter进行编号，如2.1，2.2 ...
+{{{class="brush:latex; toolbar:false"
+%导言区，编号为2.3.1,2.3.2 ...
+\numberwithin{equation}{section}
+}}}
+
+==== 子编号 ====
+形如2.1a,2.1b ...
+{{{class="brush:latex; toolbar:false"
+\begin{subequations}
+\begin{equation}
+...
+\end{equation}
+\begin{equation}
+...
+\end{equation}
+\end{subequations}
+}}}
+
+=== 数学宏包 ===
+amsmath
+
+字体宏包
+- mathrsfs,amsfonts
+- bm宏包：字体加粗
+{{{class="brush:latex; toolbar:false"
+\bm{\alpha}
+\bm{\Theta}
+\bm{x^2+y^2=z^2}
+%类似命令，将正文中的字体加粗后放入公式
+\mathbf
+}}}
+- mathptmx，fourier，更改全局公式的字体
+{{{class="brush:latex; toolbar:false"
+\mathscr{ABCD}
+}}}
+
+大于号，小于号，要放到公式环境中，否则可能编译为乱码
+
+=== 公式环境 ===
+- xcolor宏包可以改公式的颜色
+- \boxed将公式放入框中
+==== 矩阵环境 ====
+array, matrix, Bmatrix, bmatrix, Vmatrix, vmatrix, pmatrix
+{{{class="brush:latex; toolbar:false"
+%矩阵
+\[\left[\begin{matrix}
+1 & 2 & 3\\
+4 & 5 & 6\\
+7 & 8& 9
+\end{matrix}\right]\]
+}}}
+
+{{{class="brush:latex; toolbar:false"
+%arydshln可以画虚线
+%矩阵画线
+\[\left[\begin{array}{c|cc}
+1 & 2 & 3\\ \hine            
+4 & 5 & 6\\
+7 & 8& 9
+\end{array}\right]\]
+}}}
+==== 分段函数环境 ====
+{{{class="brush:latex; toolbar:false"
+\[I_{A}(x)=\begin{cases}
+1, & x\in A\\
+0, & x\not\in A
+\end{cases}\]
+}}}
+
+加前缀`\not`
+
+==== 公式对齐问题 ====
+- split环境，一定要放在公式环境中，以等号对齐，则要在等号前面加&
+- align环境，本身就是公式环境，不需要放入公式环境，默认会在公式后面产生编号
+	加入`\nonumber`可以删除默认的编号
+- eqnarray环境，利用矩阵环境去对齐公式，不推荐
+- gathered环境，默认是居中对齐
+
+=== 定理宏包 ===
+- amsthm
+- ntheorem
+==== 定理环境设置 ====
+{{{class="brush:latex; toolbar:false"
+%载入宏包
+%在导言区加入设置
+%定理的名字是thm，在正文中出现的名字是Theorem，以章单位更新计数器
+\newtheorem{thm}{Theorem}[chapter]
+\newtheorem{defn}{Definition}
+%引理，与thm共享计数器
+\newtheorem{lemma}[thm]{Lemma}
+%\newtheorem*,加个星号就不会编号
+
+%以下方式使用
+\begin{thm}
+...
+\end{thm}
+}}}
+
+==== 定理样式 ====
+{{{class="brush:latex; toolbar:false"
+% 默认样式：正体+斜体
+\theoremstyle{plain}
+% 斜体+ 正体
+\theoremstyle{definition}
+% 正体+正体
+\theoremstyle{remark}
+}}}
+=== 证明环境 ===
+- proof环境
+- 证明结尾符号`\qed`
+- `renewcommand{\proofname}{证明}`proof改成中文
+- `renewcommand{\proofname}{\sffamily Proof}`proof改成无衬线字体
+
+== 参考文献==
+=== 参考文献环境 ===
+{{{class="brush:latex; toolbar:false"
+%定义
+\begin{thebibliography}{最宽序号}
+	\bibitem[文件序号]{检索名1}文献信息1
+	\bibitem[文件序号]{检索名2}文献信息2
+\end{thebibliography}
+
+%引用
+\cite[附加信息]{检索名1，检索名2，...}
+}}}
+
+=== BibTex ===
+使用步骤
+- \bibliographystyle{bst}设定参考文献格式
+- \cite{bibkey}引用需要的文献
+- \bibliography{bib}指明要使用的文献数据库
+编译流程
+- xelatex foo %将\cite,.bib,.bst等信息写入.aux
+- bibtex foo % 编译.aux,从.bib中提取文献条目，写入.aux
+- xelatex foo % 读入.bbl，将引用信息在写入.aux
+- xelatex foo % 读入.bbl及.aux，生成有文献列表及引用的PDF
+==== BibTex数据库条目形式 ====
+详见PPT
+=== 引用格式宏包 ===
+==== cite宏包 ====
+{{{class="brush:latex; toolbar:false"
+\usepackage[参数]{cite}
+}}}
+
+==== natbib宏包 ====
+功能涵盖cite宏包
+{{{class="brush:latex; toolbar:false"
+\usepackage[参数]{natbib}
+}}}
+
+正文引用和上标引用同时存在，上标引用可以这样搞
+{{{class="brush:latex; toolbar:false"
+\newcommnd{\upcite}[1]{\textscritsize{\cite{#1}}}
+}}}
+=== 文献管理工具 ===
+==== JabRef ====
+专门用于处理.bib文件的轻量级开源文献管理工具，java程序
+
+[[http://jabref.sourceforge.net/resources.php|JabRef插件]]
+[[http://www.lhnr.de/ext/localcopy/index.php|LocalCopy插件]]:直接下载
+
+===== Mendeley =====
+当有许多文献的PDF文档的时候，用来新建文献数据库
+== 安装宏包 ==
+
+=== 常见文件类型 ===
+    - .tex 文章源代码
+    - .cls 文档类（class）
+    - .sty 宏包（style）
+    - .bib BibTex数据库文件
+    - .bst BibTex的样式文件
+    - .ins 宏包安装文件（install）
+    - .dtx 文档化的宏包源代码（documented tex source）
+    - .map 字体映射文件
+    
+=== TDS ===
+    - 按照TDS的规则，分门别类，放在指定位置
+    - TDS的根目录TEXMF（TEX and METAFONT）
+    	- TEXMF可以有多个，相互独立
+		- 优先级 当前目录>TEXMFLOCAL(texmf-local)>TEXMFDIST(texmf-dist)
+	- ls-R数据库
+		- mktexlsr 
+		- texhash 修改了texmf-dist的宏包呢，一定要利用这个命令重建ls-R数据库
+	- kpsewhich命令，可以查看当前用到的某个宏包的位置
+	- texdoc命令，查看宏包的文档
+	
+=== 宏包管理器 ===
+- tlmrgr info _package_ 返回宏包的信息
+- tlmrg option repository 查看宏包仓库的默认地址
+- tlmrg option repository http://mirror.ctan.org/systems/texlive/tlnet
+- tlmgr update --self 更新宏包管理器
+- tlmgr update --all 更新所有宏包
+- tlmgr update _package_ 更新宏包
+- tlmgr --gui gui界面（不推荐） 
+- tlmgr update --list 列出所有可用的更新
+=== 手工安装 ===
+    - TDS安装包 直接复制到texmf-local里面，texhash刷新下数据库，就好
+	- 下载的宏包可能包括.ins和.dtx文件。
+	    - 对于ins文件，可以使用pdflatex,xelatex,lualatex对文件进行编译。这样就可以释放cls文件等宏包的文件。
+	    - 利用以上命令编译dtx文件，可以获得宏包的文档
+ 	- 如果只有一个dtx文件，利用xetex编译，会出现.cls文件，在利用xelatex编译，得到说明文档
+
+=== 用什么编译 ===
+    - 直接判定不的
+    	- tex文件使用GBK编译的，则不能用xelatex编译
+		- 使用了fontspec宏包的，则不能用latex或是pdflatex编译
+	- 直接判定是的
+		- 使用了 xeCJK宏包，或graphicx，hyperref宏包的，启用了xetex选项，使用xelatex
+		- 使用了zhmCJK宏包，或graphicx，hyperref等宏包启用了pdftex选项的，使用pdflatex编译
+		- 使用了zhmCJK宏包的，或graphicx，hyperref等宏包启用了dvips或者dvipdfm(x)选项的，使用Latex编译
+		- 使用了CJK或CJKutf8宏包的，使用Latex、pdfLatex编译
+
+=== 章节标题格式如何设置 ===
+- ctex文档类的话
+{{{class="brush:latex; toolbar:false"
+	\CTEXsetup[format=]{section}
+}}}
+- 使用titlesec宏包
+
+
+=== 修改浮动体标题样式 ===
+使用caption宏包，caption2过时了的
+{{{class="brush:latex; toolbar:false"
+%\captionsetup[浮动体类型]{key-value 风格的选项}
+%把表格环境的标题加粗，并使用冒号代替原本的小圆点
+\captionsetup[table]{font=bf, labelsep=colon}
+}}}
+
+=== 报错如何看 ===
+- 叹号开始的第一行给出了错误的类型
+- 随后的部分是Latex给出的建议
+- 字母L给出的是错误发生的位置
+- 问号开始的地方正在等待用户的输入
+ 
+== 社区 ==
+- 中文
+	- http://www.latexstudio.net
+	- http://bbs.ctex.org
+	- http://www.latexstudio.net
+	- http://www.newsmth.net/nForum/#!board/Tex
+- 英文
+	- http://tex.stackexchange.com
+	- http://www.latex-community.org
+
+

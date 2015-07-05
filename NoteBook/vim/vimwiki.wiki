@@ -1,0 +1,96 @@
+=== Vimwiki ===
+官方文档： [[http://vimwiki.googlecode.com/hg/src/doc/vimwiki.txt|vimwiki官方文档]]
+
+官方文档[中文]： [[https://code.google.com/p/vim-script-cn/source/browse/trunk/doc/vimwiki.cnx|vimwiki官方文档]]
+==== 常用操作 ====
+| 操作                    | 命令                       | 描述                                |
+|-------------------------|----------------------------|-------------------------------------|
+| `<Leader> ww`           |                            | open index                          |
+| `<Leader> wh`           |                            | convert to html                     |
+| `<Leader> whh`          |                            | convert to html and open in browser |
+| `<Leader> wd`           | :VimwikiDeleteLink         | 删除当前页                          |
+| `<Leader> wr`           | :VimwikiRenameLink         | 重命名当前页                        |
+| `<Leader> wi`           | :VimwikiDiaryIndex         | 打开Diary index file                |
+| `<Leader> w <Leader> i` | :VimwikiDiaryGenerateLinks | 更新生成日记索引                    |
+| `<Leader> w <Leader> w` |                            | 新建今天的日记                      |
+| `gqq`                   |                            | 手动格式化表格                      |
+----
+==== 表格操作 ====
+`:vimwikiTable`生成一个默认的表格，在表格中输入内容后，
+    - `<Tab>`自动进入同一行下一个单元格
+    - `<CR>`自动进入同一列的下一个单元格
+    - `qgg` 格式化表格
+
+----
+==== 使用Calendar插件 ====
+设置
+{{{
+" _vimrc
+" vimwiki设置
+let g:vimwiki_use_calendar
+
+" calender设置
+let g:calendar_diary="e:\\vimwiki\\diary"
+}}}
+即可利用Calendar插件，进行日记书写！
+----
+
+=== MathJax ===
+官方文档： [[http://docs.mathjax.org/en/latest/mathjax.html|MathJax官方文档]]
+==== 整合MathJax以显示数学公式 ====
+===== 方法一 =====
+使用MathJax服务器渲染（需要联网），在模板文件中加入如下代码：
+
+{{{class="brush:javascript; toolbar:false"
+	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+}}}
+
+===== 方法二 =====
+本地安装MathJax，并加入如下代码：
+
+{{{class="brush:javascript; toolbar:false"
+<script type="text/javascript" src="<mathjax_folder>/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+}}}
+
+其中`<mathjax_folder>`就是安装MathJax的目录
+
+==== Latex语法支持 ====
+
+----
+=== Font Awesome ===
+官方文档：[[http://www.bootcss.com/p/font-awesome/|Font Awesome官方文档]]
+
+----
+=== jquery.pin.js ===
+利用jquery.pin.js实现左侧固定屏幕上方的toc
+配置如下：
+{{{class="brush:javascript; toolbar:false"
+//wiki.js文件
+	$('.toc').pin({containerSelector:".content",padding:{top:10,bottom:10},minWidth:940});
+}}}
+其实本应该使`.toc`固定在`.side-bar`中，但是不知为何一直无效，难道是因为`.side-bar`是后来js加进去的吗？
+最后无奈只好将`.toc`固定在`.content`中，被固定的元素（这里指`.toc`）会被提出文档流，所以右侧内容会移过来，
+所以还需要`side-bar`的宽度就占位……
+
+可能就是因为这个不正规的用法，导致`minWidth`设置失效……
+
+慢慢解决吧！
+
+*The Answer*
+
+原来是因为`side-bar`没有设置高度，默认的高度和内容一样高，自然把内容固定在其中，滚动时，就没有固定在屏幕上方的效果。
+
+但是在css文件中，直接设置
+{{{class="brush:css; toolbar:false"
+	.side-bar{
+		height:100%;
+	}
+}}}
+并无效果，原因不明
+最终在`wiki.js`中设置
+{{{class="brush:javascript; toolbar:false"
+	$('.side-bar').height($('.content').height()-10);
+}}}
+成功！小屏幕的时候禁用pin效果的也达到了，但是这个效果只是指toc不再浮动，而不是消失……意外啊……
+
+官方文档：[[http://www.bootcss.com/p/jquery.pin/|JQuery.pin.js]]

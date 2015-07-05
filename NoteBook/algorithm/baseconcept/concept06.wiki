@@ -1,0 +1,6 @@
+= 常用函数增长趋势 =
+$1$, $\lg N$, $N$, $N\lg N$, $N^2$, $N^3$, $2^N$
+
+{{img/ordersofgrowth.png|Orders of growth}}
+
+{{img/Common order-of-growth classifications.png|Common order of growth classifications}}

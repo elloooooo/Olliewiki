@@ -1,0 +1,431 @@
+%toc
+= VimScript =
+== 打印 ==
+echo与echom同样可以在命令行中打印字符，但是echom打印的字符将可以使用命令messages调出，而echo的将会在脚本执行完毕就清除
+== 设置 ==
+设置有两种
+    - 布尔值 值只有on,off
+	- 数值 值可以是一个数字
+设置属性方法：
+ 
+| 命令         | 含义         |
+|--------------|--------------|
+| set number   | 设置为on     |
+| set nonumber | 设置为off    |
+| set number?  | 查看当前值   |
+| set number!  | 反转为相反值 |
+
+== 映射 ==
+=== 映射正常模式 ===
+    - `:map \ dd` 正常模式下将`\`映射为`dd`
+    - `:map <space> viw` 正常模式下将空格键映射为`viw`，选中一个词
+    - `:map <c-d> dd` 正常模式下将`ctrl+d`映射为`dd`
+映射后面同行不能通过`"` 来加注释
+
+`*unmap \`解除映射
+=== 多种环境下的映射 ===
+    - :nmap 正常模式下映射
+    - :vmap 视图模式下映射
+        - `vmap \ U` 视图模式下，用`\`将所选字母变大写字母
+    - :imap 插入模式下映射
+        - `imap <c-d> <esc>ddi` 在插入模式下`ctrl+d`删除一行并进入插入模式
+
+=== 严格的映射 ===
+映射可以传递，所以下面例子中`\`会执行`dd`操作
+{{{class="brush:vimscript; toolbar:false"
+:nmap - dd
+:nmap / -
+}}}
+这会造成映射的迭代，如
+{{{class="brush:vimscript; toolbar:false"
+:nmap dd O<esc>jddk
+}}}
+`dd`命令将会迭代执行
+
+针对以上情况 
+{{{class="brush:vimscript; toolbar:false"
+:nnoremap dd O<esc>jddk
+}}}
+阻止映射的传递，每一种`*map`都有对应的`*noremap`方法，日常应该使用`*noremap`方式
+=== <leader>组合映射 ===
+vim支持组合键映射如`nmap -d dd`
+    - 前缀可以使用vim默认的`<leader>`表示
+    - 可以通过`let mapleader = "-"`将其设置为`-`
+    - `let localleader="-"`可以设置针对某种文件类型时，`<leader>`的值
+== 缩写 ==
+    - 将输入的`adn`变为`and`,用于纠错
+        - `:iabbrev adn and`
+        - `:iabbrev taht that`
+        - `:iabbrev waht what`
+    - 缩略常用字串 
+        - `@@ boyu_liu1226@163.com` 
+简写命令会在输入定义的单词后不是字母、数字、下划线是触发替换。这是它与映射的本质区别，映射将会将所以定义字符替换，而简写的触发是有条件的。
+
+=== Buffer-Local ===
+==== Buffer ====
+可以通过`<buffer>`属性，定义仅对当前buffer生效的映射
+{{{class="brush:vimscript; toolbar:false"
+:nnoremap <leader>d dd	
+:nnoremap <buffer> <leader>x dd
+}}}
+如果重复定义，带`<buffer>`属性的，将会有更高执行优先级
+{{{class="brush:vimscript; toolbar:false"
+:nnoremap <buffer> Q x
+:nnoremap Q dd
+}}}
+当前buffer中`Q`执行`x`。
+==== 最佳实践 ====
+定义仅限定为当前buffer的组合映射时，最好使用`<localleader>`而非`<leader>`，以此便于区分命令的使用范围
+==== Local ====
+属性的设置也可以用`local`修饰，用于限定当前buffer
+{{{class="brush:vimscript; toolbar:false"
+:setlocal wrap
+:setlocal nowrap
+}}}
+
+
+== 自动执行命令 ==
+=== autocmd ===
+{{{class="brush:vimscript; toolbar:false"
+	:autocmd BufNewFile[,otherEvent] * :write
+         ^         					 ^  	^
+         |         					 |  	|
+         |         					 |  	The command to run.
+         |         					 |
+         |         					 A "pattern" to filter the event.
+         |
+         The "event" to watch for.
+}}}
+监控一种事件，在对面满足某种模式时，触发后面的命令
+
+上面的例子表示：在buffer中创建一个文件时，即将其写入硬盘
+
+`:autocmd BufNewFile *.txt :write`
+表示在只针对以`.txt`结尾的文件，才直接保存
+==== 例子 ====
+{{{class="brush:vimscript; toolbar:false"
+" 写入html文件时，自动格式化
+:autocmd BufWrite *.html :normal gg=G
+" 读入和写入html时，自动格式化
+:autocmd BufWrite,BufRead *.html :normal gg=G
+" 读入和新建html时，设置当前buffer不能折行
+:autocmd BufNewFile,BufRead *.html setlocal nowrap
+" 如果文件类型为javascript，或python，当前buffer映射相应的注释符号
+:autocmd FileType javascript nnoremap <buffer> <localleader>c I//
+:autocmd FileType python     nnoremap <buffer> <localleader>c I#
+}}}
+==== 最佳实践 ====
+结合对简写的`<buffer>`限定，对特定的文件类型进行定制化的简写替换
+{{{class="brush:vimscript; toolbar:false"
+:autocmd FileType javascript :iabbrev <buffer> iff if(){}<left><left><left><left><left>
+:autocmd FileType python :iabbrev <buffer> iff if:<left>
+}}}
+=== autocmd group ===
+每次`source $MYVIMRC`，都会运行一边`autocmd`定义，vim并不会覆盖原来的自动执行命令，而是生成两条同样的命令。久而久之影响效率。
+
+利用`autocmd group`可以解决这个问题
+    - 重复执行组定义，组会合并起来，保证只有一个组；
+    - 通过`autocmd!`命令可以清楚组内命令
+==== 最佳实践 ====
+{{{class="brush:vimscript; toolbar:false"
+:augroup testgroup
+:	autocmd!
+:	autocmd BufWrite * :echom "Cats"
+:augroup END
+}}}
+以上例子中将每次合并`testgroup`，并删除里面的命令，重新定义，所以不会有重复
+
+== Operator-Pending Mapping ==
+自定义操作符截至位置映射
+{{{class="brush:vimscript; toolbar:false"
+:onoremap p i(
+}}}
+`dp`=>`di(`:删除括号中的内容
+{{{class="brush:vimscript; toolbar:false"
+:onoremap b /return<cr>
+}}}
+`db`：删除从光标位置到`return`之前的字符
+
+=== 例子 ===
+{{{class="brush:vimscript; toolbar:false"
+" markdown写法中一行下面有多个=，表示这行是标题，而本映射就是选中所在段落的标题
+:onoremap ih :<c-u>execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"<cr>
+}}}
+以上映射表示下面步骤
+# ?^==\\+$,查找有两个或两个以上`=`的模式
+# :nohlsearch，去除查找高亮
+# kvg_，视图模式选中上一行直到行尾
+==== Normal ====
+`normal`将后面的字符当做在正常模式的输入命令
+{{{class="brush:vimscript; toolbar:false"
+	:normal gg//相当于在普通模式下，直接输入gg
+}}}
+`normal!`功能同上，但是，后面的输入中，如果有映射命令，不会执行映射
+
+==== Execute ====
+`execute`将后面的字符串作为命令执行
+{{{class="brush:vimscript; toolbar:false"
+:execute "normal! gg"//作用同直接输入:normal! gg
+}}}
+`execute`可以识别特殊字符如`<cr>`，会现将特殊字符替换命令
+{{{class="brush:vimscript; toolbar:false"
+:execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"//在执行前，将会把\r替换为<cr>
+}}}
+
+
+== 状态栏 ==
+状态栏可以定义为这样
+{{{class="brush:vimscript; toolbar:false"
+:set statusline=%f\ -\ FileType:\ %y
+}}}
+但是这样的定义很快就会由于过于复杂，而难以看明白，所以可以这样定义，更加清晰
+{{{class="brush:vimscript; toolbar:false"
+:set statusline=%f         " Path to the file
+:set statusline+=\ -\      " Separator
+:set statusline+=FileType: " Label
+:set statusline+=%y        " Filetype of the file
+"当然还有其他选项
+:set statusline = %F	   " 显示完整路径，（小写是相对路径）
+:set statusline = Current:\ %4l\ Total:\ %4L " %4l，表示当前行数按照4个字符宽度显示，效果Current:  12 Total:  20
+:set statusline = Current:\ %-4l\ Total:\ %-4L " %4l，表示当前行数按照4个字符宽度显示，且占位空格靠右，效果Current:12  Total:20
+:set statusline = Current:\ %04l\ Total:\ %04L " %4l，表示当前行数按照4个字符宽度显示，且用0占位，效果Current:0012  Total:0020
+
+:set statusline+=%=        " Switch to the right side
+}}}
+=== 最佳实践 ===
+可以通过`autocommands`,`setlocal`针对不同的文件类型定义不同的状态栏格式，当然注意将`autocommands`命令放入组中，一面重复加载
+
+----
+== vimscript as language ==
+=== varible和options ===
+{{{class="brush:vimscript; toolbar:false"
+" 定义变量
+:let foo="bar"
+
+" 定义options
+:set textwidth=80
+" 前面加上&表示要引用个option，而不是一个同名的变量
+:echo &textwidth
+}}}
+任何非0的数表示true，0表示false
+{{{class="brush:vimscript; toolbar:false"
+" 布尔值options
+" 显示0
+:set nowarp
+:echo &warp
+" 显示1
+:set warp
+:echo &warp
+}}}
+可以利用let设置options
+{{{class="brush:vimscript; toolbar:false"
+" 显示100
+:let &textwidth = 100
+:set textwidth?
+" 显示110
+:let &textwidth = &textwidth + 10
+:set textwidth?
+}}}
+=== Local options ===
+利用set设置options只能将其设置为一个单一的值，
+而是用let，将options当做一个变量来设置，即可充分利用脚本的运算能力，来决定options的值
+{{{class="brush:vimscript; toolbar:false"
+" 将一个option设置为一个局部变量，需要加上变量的前缀，表示本地变量（而非全局）
+:let &l:number = 1
+" 在另一个buffer中如此设置，这两个将会有不同的行号显示结果
+:let &l:number = 0
+}}}
+
+选择一个词，y
+{{{class="brush:vimscript; toolbar:false"
+" 显示你复制的东西，@"代表无名寄存器
+:echo @"
+}}}
+
+搜索一个词（\someword）
+{{{class="brush:vimscript; toolbar:false"
+" 显示someword
+:echo @/
+}}}
+
+以上方式可以帮助在程序中获得，修改复制和搜索的内容
+=== Register和变量 ===
+{{{class="brush:vimscript; toolbar:false"
+" 向寄存器中，写入值
+:let @a = "hello!"
+" "ap 即可将寄存器a中hello！贴到编辑器中
+
+" 读取寄存器的值
+:echo @a
+}}}
+
+=== 变量范围 ===
+{{{class="brush:vimscript; toolbar:false"
+" 表示本变量范围在当前buffer
+:let b:hello = "world"
+:echo b:hello
+}}}
+
+== 条件语句 ==
+=== 多行语句 ===
+`|`表示管道操作，可以讲多条语句写在一行执行
+{{{class="brush:vimscript; toolbar:false"
+" 表示依次执行两条语句
+:echom "foo" | echom "bar"
+}}}
+=== If ===
+- vim在有必要时会强制转换字符串与数字，例如当一个字符串与一个数字相加时
+- 以数字开头的字符串将会转化为开头的数字，字符串开头，但后跟数字的字符串，将转化为0
+- 对于非0数字，if判断为真，0则为假
+{{{class="brush:vimscript; toolbar:false"
+:echom "hello" + 10 
+" 结果10
+:echom "10hello" + 10 
+" 结果 20
+:echom "hello10" + 10 
+" 结果10
+
+" 将显示文字
+:if "9024"
+:    echom "WHAT?!"
+:endif
+
+" 不显示文字
+:if "something"
+:    echom "INDEED"
+:endif
+}}} 
+
+=== Else 与 Elseif ===
+{{{class="brush:vimscript; toolbar:false"
+:if 0
+:    echom "if"
+:elseif "nope!"
+:    echom "elseif"
+:else
+:    echom "finally!"
+:endif
+}}}
+
+=== 字符串比较 ===
+{{{class="brush:vimscript; toolbar:false"
+" 显示first
+:set ignorecase
+:if "foo" ==? "FOO"
+:    echom "first"
+:elseif "foo" ==? "foo"
+:    echom "second"
+:endif
+
+" 显示two
+:set ignorecase
+:if "foo" ==# "FOO"
+:    echom "one"
+:elseif "foo" ==# "foo"
+:    echom "two"
+:endif
+}}}
+
+`==`可以比较字符串是否相等，但是其比较中是否是大小写敏感是受到`set ignorecase`设置影响的。
+
+所以，应使用`==?`与`==#`，分别表示忽略大小写的相等与大小写敏感的相等。
+相似的还有`>#`和`>?`等，用于区分比较是否对大小写敏感。
+
+
+=== 函数 ===
+vim中，为规定作用域的函数一定要用大写字母开头命名，
+即便是规定了作用域，习惯上也要用大写字母开头命名。
+
+{{{class="brush:vimscript; toolbar:false"
+" 定义函数
+" 函数无返回值
+:function Meow()
+:  echom "Meow!"
+:endfunction
+
+" 函数有返回值
+:function GetMeow()
+:  return "Meow String!"
+:endfunction
+
+" 调用函数
+" 函数如果有返回值，返回值将会被丢弃
+:call Meow()
+" 在表达式中调用函数，适用于有返回值的函数调用
+:echom GetMeow()
+}}}
+
+隐式返回
+{{{class="brush:vimscript; toolbar:false"
+:echom Meow()
+" 显示Meow!和0
+}}}
+
+如果函数没有返回值，则默认返回0
+
+== 函数传参 ==
+传入函数的参数在函数内部的引用一定要加入`a:`前缀，表示这个标量是在参数域中，否则函数无法找到。
+{{{class="brush:vimscript; toolbar:false"
+:function DisplayName(name)
+:  echom "Hello!  My name is:"
+:  echom a:name
+:endfunction
+}}}
+
+
+# `...`表示函数可以有多个参数
+# 当传入不定个数的参数，`a:0` 将表示参数个数。
+# 其他参数一次编号，如第一个参数就是`a:1`
+# `a:000`将会显示所有参数的列表
+{{{class="brush:vimscript; toolbar:false"
+:function Varg(...)
+:  echom a:0 " 显示2
+:  echom a:1 " 显示a
+:  echo a:000
+:endfunction
+
+:call Varg("a", "b")
+}}}
+
+可以同时使用常规参数与不定个数参数
+`a`被赋给`a:foo`，其他变量赋给变量列表。
+{{{class="brush:vimscript; toolbar:false"
+:function Varg2(foo, ...)
+:  echom a:foo
+:  echom a:0
+:  echom a:1
+:  echo a:000
+:endfunction
+
+:call Varg("a", "b", "c")
+}}}
+
+参变量不能被重新赋值
+{{{class="brush:vimscript; toolbar:false"
+:function Assign(foo)
+:  let a:foo = "Nope"
+:  echom a:foo
+:endfunction
+
+:call Assign("test")
+" Vim will throw an error, because you can't reassign argument variables. 
+
+:function AssignGood(foo)
+:  let foo_tmp = a:foo
+:  let foo_tmp = "Yep"
+:  echom foo_tmp
+:endfunction
+
+:call AssignGood("test")
+}}}
+
+== 常用操作助记 ==
+    - `ci(` 删除并更改括号里面的内容
+    - `yt,` 复制直到逗号前的内容
+	- `0` 光标移动到行的第一个字符
+	- `g_` 光标移动到一行的最后一个非空字符，`$` 会移动到这一行的最后一个字符（即使最后一个字符是空格）
+== 未完待续 ==
+No.25
+
+== 参考文献 ==
+[[http://learnvimscriptthehardway.stevelosh.com/|Learn vimscript the hard way]]

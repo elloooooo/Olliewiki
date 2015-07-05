@@ -1,0 +1,18 @@
+== Eclipse项目名修改 ==
+- 修改项目目录下`.project`文件
+{{{class="brush:xml; toolbar:false"
+	<?xml version="1.0" encoding="UTF-8"?>
+       <projectDescription>
+           <name>GZELearning</name>
+}}}
+- 修改项目目录下`.settings\org.eclipse.wst.common.component`下`deploy-name`,`context-root`等属性
+{{{class="brush:xml; toolbar:false"
+<wb-module deploy-name="recommender-case">
+    <wb-resource deploy-path="/" source-path="/target/m2e-jee/web-resources"/>
+    <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+    <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+    <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+    <property name="java-output-path" value="/recommender-case/target/classes"/>
+    <property name="context-root" value="recommender-case"/>
+</wb-module>
+}}}

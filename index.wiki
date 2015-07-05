@@ -1,0 +1,19 @@
+%title Ollie's wiki
+
+{{static/img/me.png|ME}}
+
+
+----
+==== 万一导航没有了呢？ ====
+
+- [[NoteBook/index|NoteBook]]
+- [[TodoList/index|TodoList]]
+- [[BookList/index|BookList]]
+- [[diary/diary|Diary]]
+
+_其实这里是为了vimwiki里面点方便啦！_
+
+----
+==== 参考资料 ====
+    * [[http://wiki.ktmud.com/tips/vim/vimwiki-guide.html|丘迟的维基世界]] 
+    * [[http://www.berlinix.com/vim/VimWiki.php|波黎克斯]]

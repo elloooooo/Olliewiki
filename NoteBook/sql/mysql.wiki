@@ -1,0 +1,56 @@
+= Mysql查询优化 =
+== 查询缓冲 ==
+=== my.ini文件设置查询缓冲 ===
+将query_cache_type设为1即可。在设置了这个属性后，MySQL在执行任何SELECT语句之前，都会在它的缓冲区中查询是否在相同的SELECT语句被执行过，如果有，并且执行结果没有过期，那么就直接取查询结果返回给客户端。但在写SQL语句时注意，MySQL的查询缓冲是区分大小写的。
+=== 临时关闭查询缓冲方法 ===
+{{{class="brush:sql; toolbar:false"
+SELECT SQL_NO_CACHE field1, field2 FROM TABLE1 
+}}}
+=== 临时开启查询缓冲方法 ===
+还可以将my.ini中的query_cache_type设成2，这样只有在使用了SQL_CACHE后，才使用查询缓冲。
+{{{class="brush:sql; toolbar:false"
+SELECT SQL_CALHE * FROM TABLE1 
+}}}
+== 优化数据类型 ==
+=== 避免使用NULL ===
+
+=== 尽可能使用更小的字段 ===
+
+== 优化子查询 ==
+遇到子查询时，MySQL查询优化引擎并不是总是最有效的，这就是为什么经常将子查询转换为连接查询的原因了，优化器已经能够正确处理连接查询了，当然要注意的一点是，确保连接表(第二个表)的连接列是有索引的，在第一个表上MySQL通常会相对于第二个表的查询子集进行一次全表扫描，这是嵌套循环算法的一部分。
+== 优化UNION ==
+在跨多个不同的数据库时使用UNION是一个有趣的优化方法，UNION从两个互不关联的表中返回数据，这就意味着不会出现重复的行，同时也必须对数据进行排序，我们知道排序是非常耗费资源的，特别是对大表的排序。
+
+UNION ALL可以大大加快速度，如果你已经知道你的数据不会包括重复行，或者你不在乎是否会出现重复的行，在这两种情况下使用UNION ALL更适合。此外，还可以在应用程序逻辑中采用某些方法避免出现重复的行，这样UNION ALL和UNION返回的结果都是一样的，但UNION ALL不会进行排序。
+
+== Limit优化 ==
+{{{class="brush:sql; toolbar:false"
+SELECT * FROM table LIMIT 5,10; //检索记录行6-15
+//为了检索从某一个偏移量到记录集的结束所有的记录行，可以指定第二个参数为-1
+mysql> SELECT * FROM table LIMIT 95,-1; //检索记录行96-last
+//如果只给定一个参数，它表示返回最大的记录行数目，换句话说，LIMIT n 等价于 LIMIT 0,n
+mysql> SELECT * FROM table LIMIT 5; //检索前5个记录行
+}}}
+
+MySQL的limit给分页带来了极大的方便，但数据量一大的时候，limit的性能就急剧下降。
+同样是取10条数据，下面两句就不是一个数量级别的。
+{{{class="brush:sql; toolbar:false"
+select * from table limit 10000,10
+select * from table limit 0,10
+}}}
+文中不是直接使用limit，而是首先获取到offset的id然后直接使用limit size来获取数据。根据他的数据，明显要好于直接使用limit。
+=== offset比较小的时候 ===
+{{{class="brush:sql; toolbar:false"
+select * from table limit 10,10 
+//多次运行，时间保持在0.0004-0.0005之间
+Select * From table Where vid ＞=(Select vid From table Order By vid limit 10,1) limit 10 
+//多次运行，时间保持在0.0005-0.0006之间，主要是0.0006
+}}}
+=== offset大的时候 ===
+{{{class="brush:sql; toolbar:false"
+select * from table limit 10000,10 
+//多次运行，时间保持在0.0187左右
+
+Select * From table Where vid ＞=(Select vid From table Order By vid limit 10000,1) limit 10
+//多次运行，时间保持在0.0061左右，只有前者的1/3。可以预计offset越大，后者越优。
+}}}

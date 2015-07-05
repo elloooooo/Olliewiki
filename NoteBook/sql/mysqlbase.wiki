@@ -1,0 +1,81 @@
+= MySql基础 =
+== 常用命令 ==
+# show
+	# show databases;
+	# show tables;
+	# show columns from xtable;
+	# show status;
+	# show create database;
+	# show create table;
+	# show grants;
+	# show errors;
+	# show warnings;
+# distinct a,b 意味着a,b都不一样，才被检索出来
+# limit 1,2 表示从偏移量为1行开始，检索2行，等同于limit 2 offset 1
+# order by a,b 首先按a排序，再按b排序。默认升序排序，若想按降序排列，需要在每一个要排序字段后加desc
+# where
+    - where条件匹配默认不区别大小写
+	- 多个条件由AND OR链接是，AND的计算优先级更高
+	- MySql支持not对IN，BETWEEN，EXISTS取反
+# like
+    - % 匹配任意0个或多个字符
+	- _ 匹配任意一个字符
+	- 尽量不要将通配符至于搜索模式开始处，这样是最慢的
+# REGEXP 正则表达式匹配
+	- select product_name from products where product_name REGEXP '1000' 只要值中出现1000的行就会被匹配
+# 克隆表
+    - CREATE TABLE _newTable_ LIKE _originalTable_
+    - 不克隆外键定义
+	- 不克隆原表可能使用的DATA DIRECTORY 和INDEX DIRECTORY
+	- INSERT INTO newTable SELECT * FROM _originalTable_
+# 使用临时表
+    - 普通表创建 CREATE TEMPORARY TABLE _tblname_(...列定义...) 
+    - 克隆表创建 CREATE TEMPORARY TABLE _tblname_ LIKE _originalTable_
+    - 根据查询结果创建 CREATE TEMPORARY TABLE _tblname_  SELECT ...
+    - 可以创建同名临时表，屏蔽普通表，这样对原来表的操作就都是对临时表的操作，与数据库的连接断开后，临时表将会被删除
+# 检查修改表的存储引擎
+    - 查看 
+		- SELECT ENGIN FROM INFORMATION_SCHEMA.TABLE WHERE TABLE_SCHEMA = 'cookbook(数据库)' AND TABLE_NAME = 'mail(表名)'
+		- SHOW TABLE STATUS LIKE 'mail'\G
+		- SHOW CREATE TABLE mail \G
+	- 修改
+    	- ALTER TABLE mail ENGINE=InnoDB 
+== 字符串 ==
+    - 二进制字符串，主要用于储存原始数据，如图像、音乐等
+    	- 包括BINARY,VARBINARY,BLOB 
+	- 非二进制字符串，用于储存字符数据，如文本，并且需要被关联到一个组字符集和Collation上
+    	- 字符集决定哪些字符在字串内合法，Collation决定比较字符次序时是否大小写敏感 
+    	- 包括CHAR,VARCHAR,TEXT
+    	- 设置字符集
+        	- `SET NAMES 'latin7' COLLATE 'latin7_bin'` 
+		- 具有CHARACTER SET属性
+    		- 查看字符集SHOW CHARACTER SET
+    		- 判断是否含有多字节字符`SET @S = CONVERT('abc' USING usc2);SELECT LENGTH(@s),CHAR_LENGTH(@s);`LENGTH()返回字节数；CHAR_LENGTH()返回字符数
+    	- COLLATE属性
+    		- 查看某种字符有哪些COLLATION可用`SHOW COLLATION LIKE 'latin1%'` 
+    		- ci，cs，bin分别表示大小写不敏感，敏感，二进制的（字符异同取决于数值是否相同）
+    		- `SELECT c FROM t ORDER BY c COLLATE latin1_general_cs`;在排序中指定collate属性
+    	- 查看一个字符串的字符集或Collation，USER()返回的字符串
+			- `SELECT USER(), CHARSET(USER()),COLLATION(USER())`
+		- `CONVERT()` 改变字符串字符集，`COLLATE`操作符改变字符串Collation 
+			{{{class="brush:sql; toolbar:false"
+				SET @S1 = 'my string';
+				SET @S2 = CONVERT(@S1 USING UTF8);
+				SET @S3 = @S1 COLLATE latin1_spanish_ci;
+				SET @S4 = @CONVERT(@S1 USING UTF8) COLLATE utf8_spanish_ci;
+			}}} 
+== 函数 ==
+Mysql主要有函数种类::文本处理函数，数值数据算数操作，处理日期和时间值并从中提取成分，返回DBMS正使用的特殊信息 
+=== 文本处理函数 ===
+# Concat()拼接字串
+    - select Concat(vend_name,'(',vend_conuntry,')') from vendors
+# LTrim(),RTrim(),Trim() 去掉左边，右边，两边的空格
+# Upper(),Lower() 
+# Left(),Right() 返回字串左边，右边的字符
+# Length() 返回字串长度
+# SubString() 返回字串的子串
+=== 日期处理函数 ===
+# Date() 从一个dateTime数据中返回日期
+# Time() 返回时间
+# Month() 返回月份
+# Year() 返回年

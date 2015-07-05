@@ -1,0 +1,76 @@
+%title Notebook
+%toc
+    While at university in 1999 I realized the best way for me to learn something was to research how it works, write a tutorial for myself that covers the main concepts, and then post it online for me to reference when needed.
+    --[[https://danielmiessler.com/study/|Study]]
+----
+= NoteBook Lists =
+== 算法基础 ==
+# [[algorithm/baseconcept/index|基本概念]]
+# [[algorithm/sort|排序]]
+# [[algorithm/median|中位数与顺序统计量]]
+# 数据结构
+    - [[algorithm/ds/stackandqueue|栈和队列]] 
+    - [[algorithm/ds/hashing|散列表]] 
+    - [[algorithm/ds/tree|二叉搜索树]]
+    - [[algorithm/ds/brtree|红黑树]]
+# [[algorithm/dynamicPrograming|动态规划]]
+    - [[algorithm/dynamic/maxsubstr|最大子串问题]] 
+    - 切割钢管问题 
+# 贪心算法
+    - 活动选择问题
+    - 霍夫曼编码 
+# 图算法
+	- [[algorithm/graph/base|基本图算法]]
+    - [[algorithm/graph/MST|最小生成树]] 
+    - [[algorithm/graph/shortestPath|单源最短路径]]
+	- [[algorithm/graph/maxFlow|最大流问题]]
+# 多线程算法
+# 数论算法
+# 字符串匹配
+== vim ==
+* [[vim/vimwiki|vimwiki]]
+* [[vim/vimscript|vimscript]]
+* [[vim/ctag|ctag的使用]]
+== Latex ==
+* [[latex/latexsuite|Latex-suite]]
+* [[latex/latexnote|Latex基础知识]]
+== Java ==
+    - [[java/others|基础知识]]
+    - [[java/list|ADT]](Abstract Data Type)
+    - [[java/iterators|Iterators]]
+== 设计模式 ==
+    - [[designPattern/basic|六大基本原则]]
+== JavaEE ==
+    - [[javaEE/container|什么是容器]]
+== JavaScript ==
+JavaScript核心组成
+# 核心ECMAScript
+# 文档对象模型DOM
+# 浏览器对象模型BOM
+
+- [[javascript/others|零散的知识点]]
+== 操作系统 ==
+[[os/storage|存储器管理]]
+== SQL ==
+    - [[sql/basic|SQL基础]]
+    - [[sql/mysqlbase|MySql基础]]
+    - [[sql/mysql|MySql查询优化]]
+    - [[sql/others|Others]]
+== Less ==
+    - [[less/syntax|Less语法]]
+== PHP == 
+    - [[php/string|字符串处理]]
+    - [[php/array|数组处理函数]]
+== Hadoop ==
+    - [[hadoop/config|环境配置]]
+    - [[hadoop/note|笔记]]
+    - [[hadoop/sqoop|sqoop]]
+== 其他 ==
+# [[others/braintest|智力题]]
+# [[others/chat|架构设计漫谈笔记]]
+# [[others/todo|知识储备之道]]
+# [[others/recommendSystem|推荐系统笔记]]
+# [[others/userPreferenceModel|用户兴趣建模笔记]]
+# [[others/eclipse|eclipse里面的项目名称修改]]
+# [[others/win8|win8删除无线网络记录]]
+# [[others/bike|牛刀小试]]

@@ -1,0 +1,3 @@
+= sqoop =
+ant jar -Dversion=2.6.0 -Declipse.home=I:\eclipse -Dhadoop.home=I:\hadoop-2.6.0
+
