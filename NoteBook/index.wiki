@@ -65,6 +65,8 @@ JavaScript核心组成
     - [[hadoop/config|环境配置]]
     - [[hadoop/note|笔记]]
     - [[hadoop/sqoop|sqoop]]
+== Redis ==
+[[redis/basic|Redis基础]]
 == 其他 ==
 # [[others/braintest|智力题]]
 # [[others/chat|架构设计漫谈笔记]]
