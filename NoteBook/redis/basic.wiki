@@ -61,6 +61,22 @@
 # 与Hash类似，包括成员-分数对
 # 基本操作
 	- ZADD
+	- ZREM
+	- ZCARD: ZCARD key-name 
+	- ZINCRBY: ZINCRBY key-name increment member
+	- ZCOUNT: ZCOUNT key-name min max
+	- ZRANK: ZRANK key-name member:返回给定成员的位置
+	- ZSCORE: ZSCORE key-name member:返回给定成员的分数
 	- ZRANGE：基于分数排序后，获得一种一段成员
 	- ZRANGEBYSCORE：基于一个分数段取出一段成员
-	- ZREM
+=== Publish/Subscribe ===
+# 基本操作
+	- SUBSCRIBE
+	- UNSUBSCRIBE
+	- PUBLISH
+	- PSUBSCRIBE
+=== Sort ===
+
+=== Transaction ===
+
+=== PUNSUBSCRIBE ===
