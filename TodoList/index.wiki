@@ -50,6 +50,20 @@ Web后段开发工程师-媒体产品技术中心
 * [ ] NoSql数据库
 * [ ] Ajax跨域
 
+== 本周任务 == 
+* [ ] 写测试程序测试监控
+* [ ] 熟悉测试环境数据库commit表
+* [ ] srv-vip
+* [ ] srv-location-service
+* [ ] thift VS zk
+* [ ] 本地缓存 VS zk（ZKLocalCacheWatcher）
+----
+=== 后续任务 ===
+* [ ] api-customer
+* [ ] api-vipdriver
+* [ ] srv-customer
+
+
 %%== 论文相关 ==
 %%* [ ] 实践考核表
 %%* [ ] 学术考核表（四次），需要照片取证
