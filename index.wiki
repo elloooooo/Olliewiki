@@ -1,6 +1,6 @@
 %title Ollie's wiki
 
-{{static/img/me.png|ME}}
+{{static/img/headPic.jpg|ME}}
 
 
 ----
