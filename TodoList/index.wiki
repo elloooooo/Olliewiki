@@ -7,3 +7,74 @@
 == 本周任务 ==
 * [ ] 熟悉Linux（Shell命令：sed,awk,find,ssh,iconv,free,ps,iostat,netstat,lsof,autobench,ab）
 * [ ] JavaIO相关内容：阻塞IO，NIO，recator模式，selector模式，Netty
+=======
+* [ ] 论文
+    * [ ] 推荐算法（无创新）
+    * [ ] 算法混合器（创新）
+    * [ ] 分布式（系统集成创新）
+== 项目总结完善 ==
+* [ ] 完成工具包开发
+    - [ ] EasyUI打印工具
+    - [ ] EasyUI导出工具
+* [ ] 权限系统设计总结    
+* [ ] 数据权限系统设计
+* [ ] Spring Webflow使用总结
+* [ ] PHP项目总结
+
+== TMP ==
+Java开发工程师-移动新媒体
+    - 深入理解JVM，熟悉Spring
+    - 精通设计模式，敏捷开发
+    - 熟悉TCP/IP，http
+    - 熟悉MySql数据库
+    - 熟悉Linux平台操作
+Java开发工程师-移动视频中心
+    - 精通Java，熟悉Spring，Hibernate
+    - 熟悉TCP/IP,http
+    - 熟悉Nginx，Resin
+    - 熟悉Redis，Memcached高性能分布式缓存，JVM优化
+    - 熟悉Linux（Shell命令：sed,awk,find,ssh,iconv,free,ps,iostat,netstat,lsof,autobench,ab）
+Web后段开发工程师-媒体产品技术中心
+    - 熟悉Mysql，了解Memcached，Redis等缓存技术，了解Mongodb等NoSql数据库
+    - 熟悉HTML/CSS/JavaScript
+    - 熟悉Linux
+== 查漏补缺 == 
+* [ ] RPC
+* [ ] cookie
+* [ ] 线程间通信
+* [ ] 开源项目
+* [ ] 数据库 查询优化 多表查询
+* [ ] Linux基本操作 网卡配置 查看CPU利用率 磁盘容量
+* [ ] 类加载机制
+* [ ] js基本操作
+* [ ] IOC
+* [ ] 设计模式
+* [ ] 分库分表的含义
+* [ ] 原型模式能快多少
+* [ ] NoSql数据库
+* [ ] Ajax跨域
+
+== 本周任务 == 
+* [ ] 写测试程序测试监控
+* [ ] 熟悉测试环境数据库commit表
+* [ ] srv-vip
+* [ ] srv-location-service
+* [ ] thift VS zk
+* [ ] 本地缓存 VS zk（ZKLocalCacheWatcher）
+----
+=== 后续任务 ===
+* [ ] api-customer
+* [ ] api-vipdriver
+* [ ] srv-customer
+
+
+%%== 论文相关 ==
+%%* [ ] 实践考核表
+%%* [ ] 学术考核表（四次），需要照片取证
+%%* [ ] 开题查新报告
+%%* [ ] ei论文（3个月）
+%%* [ ] 科技论文在线（三星以上）
+%%* [ ] 专利申请（3个月）
+%%* [ ] 软件著作权（3个月）
+%%* [ ] 实物验收测试表
+%%* [ ] [[plan|大概计划]]
