@@ -4,6 +4,10 @@
 * [X] Java基础
 * [X] 算法导论
 * [X] 数据结构
+== 本周任务 ==
+* [ ] 熟悉Linux（Shell命令：sed,awk,find,ssh,iconv,free,ps,iostat,netstat,lsof,autobench,ab）
+* [ ] JavaIO相关内容：阻塞IO，NIO，recator模式，selector模式，Netty
+=======
 * [ ] 论文
     * [ ] 推荐算法（无创新）
     * [ ] 算法混合器（创新）

@@ -75,4 +75,3 @@ JavaScript核心组成
 # [[others/userPreferenceModel|用户兴趣建模笔记]]
 # [[others/eclipse|eclipse里面的项目名称修改]]
 # [[others/win8|win8删除无线网络记录]]
-# [[others/bike|牛刀小试]]
