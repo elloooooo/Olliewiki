@@ -52,34 +52,34 @@
 <!-- <meta http-equiv="Content-Type" content="text/html; charset=%encoding%"> -->
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
-<body>
-<div class="container">
-<nav class="navbar navbar-inverse" role="navigation">
-<div class="navbar-header">
-<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-<span class="sr-only">Toggle navigation</span>
-<span class="icon-bar"></span>
-<span class="icon-bar"></span>
-<span class="icon-bar"></span>
-</button>
-<a class="navbar-brand">Ollie's Wiki</a>
-</div>
-<div class="collapse navbar-collapse">
-<ul class="nav navbar-nav">
-<li><a href="%root_path%index.html"><i class="icon-home"></i> Home</a></li>
-<li><a href="%root_path%NoteBook/index.html"><i class="icon-pencil"></i> NoteBook</a></li>
-<li><a href="%root_path%TodoList/index.html"><i class="icon-ok"></i> TodoList</a></li>
-<li><a href="%root_path%BookList/index.html"><i class="icon-book"></i> BookList</a></li>
-<li><a href="%root_path%diary/diary.html"><i class="icon-coffee"></i> Diary</a></li>
-</ul>
-</div>
-</div>
-</nav>
-<div class="container content-body">
-<div class="content">
-%content%
-</div>
-</div>
-<script type="text/javascript" src="%root_path%static/js/wiki.js"></script>
-</body>
+	<body>
+		<div class="container">
+			<nav class="navbar navbar-inverse" role="navigation">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				<a class="navbar-brand">Ollie's Wiki</a>
+				</div>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="%root_path%index.html"><i class="icon-home"></i> Home</a></li>
+						<li><a href="%root_path%NoteBook/index.html"><i class="icon-pencil"></i> NoteBook</a></li>
+						<li><a href="%root_path%TodoList/index.html"><i class="icon-ok"></i> TodoList</a></li>
+						<li><a href="%root_path%BookList/index.html"><i class="icon-book"></i> BookList</a></li>
+						<li><a href="%root_path%diary/diary.html"><i class="icon-coffee"></i> Diary</a></li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<div class="container content-body">
+			<div class="content">
+			%content%
+			</div>
+		</div>
+		<script type="text/javascript" src="%root_path%static/js/wiki.js"></script>
+	</body>
 </html>
