@@ -43,7 +43,10 @@
 <script type="text/javascript" src="%root_path%static/js/syntaxhighlighter/shBrushLaTex.js"></script>
 <script type="text/javascript" src="%root_path%static/js/syntaxhighlighter/shBrushVimScript.js"></script>
 <!-- 加入数学公式的支持 -->
+<!--
 <script type="text/javascript" src="%root_path%static/js/mathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 <link type="text/css" rel="stylesheet" href="%root_path%static/css/syntaxhighlighter/shCoreDefault.css"/>
 <link type="text/css" rel="stylesheet" href="%root_path%static/css/font-awesome.css"/>
