@@ -13,6 +13,7 @@
     - [[algorithm/ds/hashing|散列表]] 
     - [[algorithm/ds/tree|二叉搜索树]]
     - [[algorithm/ds/brtree|红黑树]]
+    - [[algorithm/ds/skiplist|跳表]]
 # [[algorithm/dynamicPrograming|动态规划]]
     - [[algorithm/dynamic/maxsubstr|最大子串问题]] 
     - 切割钢管问题 
@@ -38,6 +39,7 @@
     - [[java/others|基础知识]]
     - [[java/list|ADT]](Abstract Data Type)
     - [[java/iterators|Iterators]]
+    - [[java/classloader|Class与ClassLoader]]
 == 设计模式 ==
     - [[designPattern/basic|六大基本原则]]
 == JavaEE ==
@@ -76,3 +78,4 @@ JavaScript核心组成
 # [[others/eclipse|eclipse里面的项目名称修改]]
 # [[others/win8|win8删除无线网络记录]]
 # [[others/algotest|笔试题]]
+# [[others/geohash|GeoHash]]
