@@ -25,7 +25,9 @@ InnDB为索引组织表: 按照主键构造B+树,叶子节点存放表的行记�
 
 == 全文索引 ==
 
-== RTree ==
-
-== GeoHash ==
-按照主键构建B+树，叶子节点存放表的行记录数据
+== 空间索引 ==
+- R-tree
+- R*-tree
+- Hilbert R-tree
+- Quad-tree
+- GeoHash
