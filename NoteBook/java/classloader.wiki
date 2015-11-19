@@ -1,0 +1,15 @@
+= 使用Class & ClassLoader获取资源 =
+Class & ClassLoader获取资源的时候都需要使用到资源名。
+资源名传递给Class的方法时，可以使用前置反斜线（/）表示这是一个绝对路径，
+而不使用前置反斜线（/）的时候表示一个相对路径。
+资源名传递给ClassLoader的方法时，资源文件是被看作一个Java类来加载的。
+
+== Class ==
+ 使用Class的时候，传递给它的资源名称既可以是绝对路径，也可以是相对路径。
+ 而反斜线（/）一般是代表编译后的class的根目录，而相对路径则是相对于当前调用者所属类的路径。
+== ClassLoader ==
+ 只用ClassLoader的时候，资源文件被看作一个类文件来加载的，
+传递给ClassLoader的名称必须符合Java规范定义的名称（Binary Name），对应Java的类而言，那就是包名.类名，
+如果把Java的Class文件也看成一种资源的话，那么这个资源的名称就是：包名.类名.class，
+例如java.lang.String.class，
+这种格式的资源名称都是从编译后的class根目录开始表示的(Java包的文件层次结构)，而且对classpath路径上的Jar包也是适用的。对于一般意义上的资源文件，相比Java的Class文件只是文件后缀不同而已。 

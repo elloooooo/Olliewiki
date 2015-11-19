@@ -26,7 +26,6 @@
 <script type="text/javascript" src="%root_path%static/js/syntaxhighlighter/shBrushErlang.js"></script>
 <script type="text/javascript" src="%root_path%static/js/syntaxhighlighter/shBrushGroovy.js"></script>
 <script type="text/javascript" src="%root_path%static/js/syntaxhighlighter/shBrushJava.js"></script>
-<script type="text/javascript" src="%root_path%static/js/syntaxhighlighter/shBrushJavaFx.js"></script>
 <script type="text/javascript" src="%root_path%static/js/syntaxhighlighter/shBrushJScript.js"></script>
 <script type="text/javascript" src="%root_path%static/js/syntaxhighlighter/shBrushPerl.js"></script>
 <script type="text/javascript" src="%root_path%static/js/syntaxhighlighter/shBrushPhp.js"></script>
@@ -43,7 +42,10 @@
 <script type="text/javascript" src="%root_path%static/js/syntaxhighlighter/shBrushLaTex.js"></script>
 <script type="text/javascript" src="%root_path%static/js/syntaxhighlighter/shBrushVimScript.js"></script>
 <!-- 加入数学公式的支持 -->
+<!--
 <script type="text/javascript" src="%root_path%static/js/mathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+-->
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 <link type="text/css" rel="stylesheet" href="%root_path%static/css/syntaxhighlighter/shCoreDefault.css"/>
 <link type="text/css" rel="stylesheet" href="%root_path%static/css/font-awesome.css"/>
@@ -52,34 +54,49 @@
 <!-- <meta http-equiv="Content-Type" content="text/html; charset=%encoding%"> -->
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
-<body>
-<div class="container">
-<nav class="navbar navbar-inverse" role="navigation">
-<div class="navbar-header">
-<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-<span class="sr-only">Toggle navigation</span>
-<span class="icon-bar"></span>
-<span class="icon-bar"></span>
-<span class="icon-bar"></span>
-</button>
-<a class="navbar-brand">Ollie's Wiki</a>
-</div>
-<div class="collapse navbar-collapse">
-<ul class="nav navbar-nav">
-<li><a href="%root_path%index.html"><i class="icon-home"></i> Home</a></li>
-<li><a href="%root_path%NoteBook/index.html"><i class="icon-pencil"></i> NoteBook</a></li>
-<li><a href="%root_path%TodoList/index.html"><i class="icon-ok"></i> TodoList</a></li>
-<li><a href="%root_path%BookList/index.html"><i class="icon-book"></i> BookList</a></li>
-<li><a href="%root_path%diary/diary.html"><i class="icon-coffee"></i> Diary</a></li>
-</ul>
-</div>
-</div>
-</nav>
-<div class="container content-body">
-<div class="content">
-%content%
-</div>
-</div>
-<script type="text/javascript" src="%root_path%static/js/wiki.js"></script>
-</body>
+	<body>
+		<div class="container">
+			<nav class="navbar navbar-inverse" role="navigation">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				<a class="navbar-brand">Ollie's Wiki</a>
+				</div>
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="%root_path%index.html"><i class="icon-home"></i> Home</a></li>
+						<li><a href="%root_path%NoteBook/index.html"><i class="icon-pencil"></i> NoteBook</a></li>
+						<li><a href="%root_path%TodoList/index.html"><i class="icon-ok"></i> TodoList</a></li>
+						<li><a href="%root_path%BookList/index.html"><i class="icon-book"></i> BookList</a></li>
+						<li><a href="%root_path%diary/diary.html"><i class="icon-coffee"></i> Diary</a></li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<div class="container content-body">
+			<div class="content">
+			%content%
+
+			<hr>
+			<div id="disqus_thread"></div>
+			</div>
+		</div>
+		<script type="text/javascript" src="%root_path%static/js/wiki.js"></script>
+		<script type="text/javascript">
+			/* * * CONFIGURATION VARIABLES * * */
+			var disqus_shortname = 'olliewiki';
+
+			/* * * DON'T EDIT BELOW THIS LINE * * */
+			(function() {
+				var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+				dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+				(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+			})();
+		</script>
+		<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+	</body>
 </html>
