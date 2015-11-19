@@ -12,3 +12,8 @@
 # [X] 《设计模式之禅》
 # [X] 《Effective Java》
 # [X] 《大型网站系统与Java中间件》
+# [ ] 《javascript 设计模式》
+# [ ] 《javascript权威指南》
+# [ ] 《Html5权威指南》
+# [ ] 《angularjs权威教程》
+# [ ] 《webkit技术内幕》
