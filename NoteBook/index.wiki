@@ -80,3 +80,4 @@ JavaScript核心组成
 # [[others/win8|win8删除无线网络记录]]
 # [[others/algotest|笔试题]]
 # [[others/geohash|GeoHash]]
+# [[others/randomwalk|随机游走算法]]
