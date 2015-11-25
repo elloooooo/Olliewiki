@@ -44,6 +44,7 @@
     - [[designPattern/basic|六大基本原则]]
 == JavaEE ==
     - [[javaEE/container|什么是容器]]
+    - [[javaEE/log4j|log4J]]
 == JavaScript ==
 JavaScript核心组成
 # 核心ECMAScript
