@@ -37,6 +37,7 @@
 * [[latex/latexnote|Latex基础知识]]
 == Java ==
     - [[java/others|基础知识]]
+    - [[java/jvm|JVM]]
     - [[java/list|ADT]](Abstract Data Type)
     - [[java/iterators|Iterators]]
     - [[java/classloader|Class与ClassLoader]]
@@ -81,3 +82,4 @@ JavaScript核心组成
 # [[others/algotest|笔试题]]
 # [[others/geohash|GeoHash]]
 # [[others/randomwalk|随机游走算法]]
+# [[others/particleSwarm|粒子群算法]]

@@ -16,5 +16,5 @@
 # [ ] 《javascript 设计模式》
 # [ ] 《javascript权威指南》
 # [ ] 《Html5权威指南》
-# [ ] 《angularjs权威教程》
-# [ ] 《webkit技术内幕》
+# [ ] 《Angularjs权威教程》
+# [ ] 《Webkit技术内幕》
