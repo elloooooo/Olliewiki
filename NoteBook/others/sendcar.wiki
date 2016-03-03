@@ -1,0 +1,42 @@
+= 送车算法 =
+== 问题 ==
+==== 基本概念： ====
+# sender：送车员
+# park：车场
+# client：客户
+# order：订单（从指定车场，将车送给特定的客户）
+
+sender选单问题。要求送车员空跑的里程尽量的少。
+
+== 解法 ==
+# 首先按照order的到达时间，对order进行排序
+# 取T时间内的所有order（n个），加入待分配的订单列表。
+# 假设有m个sender，那么当前的问题可以表示为m个sender如何领取n个order，使得最终sender送单过程中，空跑的消耗最少，表示为问题Q
+# 如果问题Q得到妥善的解决，那么第一批m个订单就发出了；
+# 当第一个$sender_{first}$送单结束后，检查待分配order列表中的第一个$order_{m+1}$
+# 如果$order_i$的到达时间为$T_{des}$，预计完成该订单耗时$t_{proc}$, 而预计$sender_{first}$到达取车点$park_x$耗时为$t_{fetch}$，那么在$sender_{first}$必须要开始送这单前，将有$t_{buff}$的时间，可以作为缓冲区间
+# $t_{buff}=T_{curr}-T_{des}-t_{proc}-t_{fetch}$
+# 在$t_{buffer}$内，$sender_{first}$无需急着接$order_i$，而是等待看是否有其他的sender变为可用状态；
+# 在$t_{buffer}$内，$sender_x,sender_y,...,sender_z$等k个sender变为可用
+# 问题变为k个sender，领取n-m个订单的问题，也属于问题Q
+
+
+=== 问题Q的求解 ===
+==== 问题 ====
+m个sender，领取n个订单的，如果领取，sender空跑历程最少？
+==== 解 ====
+问题解空间，如果m<n，则将n个order分给m个sender共有 $n\times(n-1)\times(n-2)\times...\times(n-m+1)$个；
+如果m>n，则有$m\times(m-1)\times...\times(m-n+1)$个；
+
+如果通过暴力搜索解空间，同时根据是否可以及时将订单送达作为剪枝的条件，最坏情况下是复杂度为$O(n!)$；
+
+所以应该思考如何能够缩小解空间？
+
+=== 问题 ===
+# 问题Q 如何剪枝，通过无法送达作为约束条件剪枝，只能保证分配给sender的单子都可送达，但是不能保证sender领取的单子一定是最紧急的那些！
+# 为了解决上面的问题，可能只有同过每次从待分配列表中读取m(与空闲sender数量相同)个order，进行分配。
+
+
+
+
+
