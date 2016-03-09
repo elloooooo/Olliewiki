@@ -1,0 +1,2 @@
+= Thread =
+通过调Native Method控制CPU

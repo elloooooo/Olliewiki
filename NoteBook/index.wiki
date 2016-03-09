@@ -13,6 +13,7 @@
     - [[algorithm/ds/hashing|散列表]] 
     - [[algorithm/ds/tree|二叉搜索树]]
     - [[algorithm/ds/brtree|红黑树]]
+    - [[algorithm/ds/skiplist|跳表]]
 # [[algorithm/dynamicPrograming|动态规划]]
     - [[algorithm/dynamic/maxsubstr|最大子串问题]] 
     - 切割钢管问题 
@@ -36,12 +37,18 @@
 * [[latex/latexnote|Latex基础知识]]
 == Java ==
     - [[java/others|基础知识]]
+    - [[java/jvm|JVM]]
     - [[java/list|ADT]](Abstract Data Type)
     - [[java/iterators|Iterators]]
+    - [[java/classloader|Class与ClassLoader]]
+    - [[java/concurrent|Java并发类]]
+    - [[java/thread|Java线程]]
+    - [[java/IO|JavaIO]]
 == 设计模式 ==
     - [[designPattern/basic|六大基本原则]]
 == JavaEE ==
     - [[javaEE/container|什么是容器]]
+    - [[javaEE/log4j|log4J]]
 == JavaScript ==
 JavaScript核心组成
 # 核心ECMAScript
@@ -77,3 +84,7 @@ JavaScript核心组成
 # [[others/eclipse|eclipse里面的项目名称修改]]
 # [[others/win8|win8删除无线网络记录]]
 # [[others/algotest|笔试题]]
+# [[others/geohash|GeoHash]]
+# [[others/randomwalk|随机游走算法]]
+# [[others/particleSwarm|粒子群算法]]
+# [[others/sendcar|送车算法]]

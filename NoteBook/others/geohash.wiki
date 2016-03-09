@@ -1,0 +1,35 @@
+= Geohash =
+
+== 维护司机位置 ==
+
+司机端数据
+| id | lastGeoHash |
+|    |             |
+
+服务端数据Redis
+| key     | value      |
+| GeoHash | 司机ID链表 |
+
+# 司机定时上传GPS坐标
+# GPS坐标转为GeoHashCode
+# 以GeoHashCode为Key，获得司机ID链表，将司机ID加入该列表
+# 服务端将计算好的GeoHashCode作为相应LastGeoHashCode返回给司机端
+# 司机端保存该响应中的LastGeoHashCode
+# 下次上传GPS坐标时，带上LastGeoHashCode
+# 服务端计算GPS坐标对应的GeoHashCode，如果该GeoHashCode与LastGeoHashCode不相同，则找到LastGeoHashCode中的value，删除司机ID，将其添加到GeoHashCode对应的value中。
+
+== 为用户圈司机 ==
+
+数据库
+| id | geoHashCode | 上 | 下 | 左 | 右 | 左上 | 左下 | 右上 | 右下 |
+|    |             |    |    |    |    |      |      |      |      |
+
+# 用户上传GPS数据
+# 服务端将GPS数据转换为GeoHashCode，以该值作为条件，去数据库中查询记录，即可获得对应位置周围的8个格子的GeoHashCode
+# 以这9个GeoHashCode为key，查询对应value，返回这些列表中的司机ID
+
+== 问题 ==
+# 如果司机下线，如何清除其GeoHashCode对应司机链表中的记录?
+# 司机链表中是否应该保存对象，对象中包含司机的GPS点记录，用于所有返回司机与乘客计算实际距离并排序?
+# 圈司机过程中，根据用户GeoHashCode计算周围8个格子的GeoHashCode是否有必要预存在数据库中?
+# geoHashCode如果预存在数据库，那么不同长度的（不同精度）的GeoHashCode要初始化不同的库使用吗？

@@ -1,0 +1,8 @@
+= 随机游走 =
+== 递推公式 ==
+$P(i) = (1-d) \times r_i + d \sum_{j \in in(i)} \frac{P(j)}{|out(j)|}$
+
+$r_i = 0 (i \neq u)$
+
+$r_i = 1 (i = u)$
+

@@ -13,3 +13,8 @@
 # [X] 《Effective Java》
 # [X] 《大型网站系统与Java中间件》
 # [ ] 《从paxos到zookeeper》
+# [ ] 《javascript 设计模式》
+# [ ] 《javascript权威指南》
+# [ ] 《Html5权威指南》
+# [ ] 《Angularjs权威教程》
+# [ ] 《Webkit技术内幕》
